@@ -19,7 +19,8 @@ services:
     ports:
       - "3000:3000"
     healthcheck:
-      test: [ "CMD", "wget", "--spider", "-q", "http://localhost:3000" ]
-      interval: 5s
+      test: [ "CMD-SHELL", "node -e 'require(\"http\").get(\"http://localhost:3000\", (res) => res.statusCode === 200 ? process.exit(0) : process.exit(1)).on(\"error\", () => process.exit(1))'" ]
+      interval: 10s
       timeout: 5s
       retries: 5
+      start_period: 20s
