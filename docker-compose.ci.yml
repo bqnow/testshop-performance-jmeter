@@ -4,10 +4,14 @@ services:
     image: justb4/jmeter:latest
     volumes:
       - .:/tests
-    # Wir übergeben die Parameter direkt hier
-    # 'app' ist der Hostname im Docker-Netzwerk (da wir es später linken)
+    # Wir nutzen ein Shell-Scripting im Command, um sicherzustellen, dass die Ordner existieren
+    entrypoint: [ "/bin/sh", "-c" ]
     command: >
-      -n -t /tests/jmx/smoketestjmx.jmx -l /tests/results/result.jtl -e -o /tests/results/report -JHOST=app -JPORT=3000
+      "mkdir -p /tests/results/report && 
+       jmeter -n -t /tests/jmx/smoketestjmx.jmx 
+       -l /tests/results/result.jtl 
+       -e -o /tests/results/report 
+       -JHOST=app -JPORT=3000"
     depends_on:
       app:
         condition: service_healthy
