@@ -1,4 +1,5 @@
 # JMeter Performance Testing Project - Testshop
+<!-- CI Trigger: Fixed JMeter Docker image tag -->
 
 Dieses Projekt ist ein professionelles Grundgerüst für Lasttests der `bqnow-testapp`. Es dient als Lernpfad von den ersten Klicks bis zur komplexen API-Korrelation und industriekonformen Report-Generierung.
 
