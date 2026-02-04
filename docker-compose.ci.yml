@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  # Der JMeter-Container
+  jmeter:
+    image: justb4/jmeter:5.6.3
+    volumes:
+      - .:/tests
+    # Wir übergeben die Parameter direkt hier
+    # 'app' ist der Hostname im Docker-Netzwerk (da wir es später linken)
+    command: >
+      -n -t /tests/jmx/smoketestjmx.jmx -l /tests/results/result.jtl -e -o /tests/results/report -JHOST=app -JPORT=3000
+    depends_on:
+      app:
+        condition: service_healthy
+
+  # Wir definieren 'app' hier nur als Platzhalter (external), 
+  # damit docker-compose nicht meckert. In der CI wird es durch die echte App ersetzt.
+  app:
+    image: ${SHOP_IMAGE:-ghcr.io/bqnow/testshop:latest}
+    ports:
+      - "3000:3000"
+    healthcheck:
+      test: [ "CMD", "wget", "--spider", "-q", "http://localhost:3000" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
