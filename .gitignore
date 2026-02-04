@@ -1,0 +1,7 @@
+# JMeter Results
+results/
+*.jtl
+*.log
+
+# OS files
+.DS_Store
